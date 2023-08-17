@@ -4,8 +4,8 @@ import requests
 # endopoint = "https://httpbin.org/anything"
 endopoint = "http://localhost:8000/api"
 
-get_response = requests.get(endopoint, params={"abc": 123}, json={"query":"hello world"})
-# print(get_response.headers)
+get_response = requests.post(endopoint, params={"abc": 123}, json={"title": 'ABC', "other": "Product 1", "price":10})
+print(get_response.headers)
 # print(get_response.text)
 
 print(get_response.json())
