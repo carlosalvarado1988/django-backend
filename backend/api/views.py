@@ -15,7 +15,7 @@ def api_home(request, *args, **kwargs):
         # instance = serializer.save()
         print(serializer.data)
         return Response(serializer.data)
-    # return Response({"Invalid":"not good data"}, status= 400)
+    return Response({"Invalid":"not good data"}, status= 400)
 
     # @api_view(["GET"])
     # instance = Product.objects.all().order_by("?").first()
