@@ -10,4 +10,4 @@ data = {
 get_response = requests.post(endopoint, json=data)
 
 print(get_response.json())
-print(get_response.status_code)
+print(f"status: {get_response.status_code}")
