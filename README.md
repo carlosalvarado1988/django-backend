@@ -37,4 +37,5 @@ run a client file:
 
 > python3 client/details.py
 
+course video: https://www.youtube.com/watch?v=c708Nf0cHrs
 course time: 2:04min
