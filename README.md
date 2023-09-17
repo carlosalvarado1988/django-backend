@@ -37,5 +37,64 @@ run a client file:
 
 > python3 client/details.py
 
+## Session Authentication && Permissions
+
+## Views as an REST API
+
+We import libs from the framework
+from rest_framework import generics, mixins, permissions
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+
+these generic views, function based view or the mixins allow to create class methods that automate a lot of the work for a REST API, it handes status codes, updates to database, args handling, permissions and more.
+
+### Permissions
+
+Generics views can use permission classes.
+from rest_framework import permissions
+https://docs.djangoproject.com/en/4.2/topics/auth/default/
+
+## Authentication
+
+we need to create a super user
+navigate to the backend folder.
+
+> python3 backend/manage.py createsuperuser
+
+for this project, it is left as: carlosalvarado
+for testing purposes, password is 1234
+navigate to admin panel:
+
+> localhost:8000/admin/
+
+creating another user named: staff, with password sept2023
+
+Custom Models can be added to the admin view, go to admin.py inside the model folder Product:
+add this line:
+
+> from .models import Product
+> admin.site.register(Product)
+
+then special permissins need to be given to each user to do things with the modules
+http://localhost:8000/admin/
+![admin pannel - add permission](image.png)
+
+when Login, i have a session that is read by the API viewer.
+http://localhost:8000/api/products/
+it can create registers at the bottom
+
+in the admin, you can also create a group for special permission, eg:
+![Alt text](image-1.png)
+
+Then it can be added to a specific user:
+![Alt text](image-2.png)
+
+so there are two level of permission, at the user itself, or at a group.
+
+### Custom permissions
+
+We create the file. permissions.py inside the models folder, in this case products.
+
 course video: https://www.youtube.com/watch?v=c708Nf0cHrs
 course time: 2:04min

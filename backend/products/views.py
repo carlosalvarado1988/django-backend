@@ -1,4 +1,4 @@
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, authentication, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -11,10 +11,30 @@ from .serializers import ProductSerializer
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    print('We are in ProductListCreateAPIView')
+    # Authentication module
+    authentication_classes = [authentication.SessionAuthentication]
+
+    # implementing the permission (middleware) from rest_framework
+    # apparently just by creating the permission_classes definition, the framework recongnizes it and it starts working
+
+    # this one prevents any method if not authenticated
+    # permission_classes = [permissions.IsAuthenticated]
+    
+    # this one allows list but not create
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # This one is from DjangoModel, meaning it bases permission based on the user itself, 
+    # according to what was setup in the admin pannel or via the CLI user creation
+    permission_classes = [permissions.DjangoModelPermissions]
+
+
+
 
     def perform_create(self, serializer):
         # this could be one line method to save a user in the serializer
         # serializer.save(user=self.request.user)
+        print('WE ARE HERE IN ProductListCreateAPIView')
         print(serializer.validated_data)
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content') or None
