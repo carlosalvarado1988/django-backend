@@ -1,5 +1,8 @@
 # Django Backend
 
+Django official documentation:
+https://www.django-rest-framework.org/
+
 course video: https://www.youtube.com/watch?v=c708Nf0cHrs
 course time: 2:04min
 
@@ -114,3 +117,66 @@ inside it we def a method: has_permission
 note: on the built in admin tool, permissions can be tested, you can access different tables or data, and test different actions as only see, edit, create or delete.
 
 ### Token authentication
+
+we need to add a built-in module from rest_framework, the authtoken.
+into the cfehome directory, look for settings, look for the array of INSTALLED_APPS, and add:
+
+> INSTALLED_APPS = [
+>
+> > ..,
+> > 'rest_framework.authtoken',
+> > ...
+> > ]
+
+then make sure to run migrations.
+
+> python3 backend/manage.py migrate
+
+now i got a tokens table.
+![Alt text](image-3.png)
+
+then adding, a rest api to get the tokem, inside api urls.py
+
+> from rest_framework.authtoken.views import obtain_auth_token
+> .. and the urlspatters:
+> path('auth/', obtain_auth_token)
+
+Lastly, in the products views, we need to add the atuthentication method for auth.
+
+> authentication_classes = [
+>
+> > authentication.SessionAuthentication,
+> > authentication.TokenAuthentication
+> > ]
+
+then, the client needs to change the wait is making its calls to the api.
+eg. client/list.py
+first get the token and then add it as a hearder.
+
+> endopoint = "http://localhost:8000/api/products/"
+
+    token = get_auth_token_response.json()['token']
+    headers = {
+        "Authorization": f"Token {token}"
+    }
+
+Note. Django authentication works with 'Token' authorization, if we want to use Bearer, we need to modify a bit (override) the exitsint.
+so e add a authorization.py file in the API directory.
+
+in authorization.py
+
+> from rest_framework.authentication import TokenAuthentication as BaseTokenAuth
+> class TokenAuthentication(BaseTokenAuth)
+> keyword = 'Bearer'
+
+then we add our custom method to override the authentication method in views.py of products module.
+
+## A default pattern to reuse auth models.
+
+so far we have built specefic use cases for our product model. how about reusing some in different new modules?
+we refer to their documentation: https://www.django-rest-framework.org/#installation:~:text=DEFAULT_PERMISSION_CLASSES
+
+> 'DEFAULT_PERMISSION_CLASSES': [
+> > 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+> >'WE REFER TO THE PATH'
+> >]

@@ -2,7 +2,7 @@ from rest_framework import generics, mixins, authentication, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
+from api.authentication import TokenAuthentication
 from .models import Product
 from .permissions import IsStaffEditorPermission
 from .serializers import ProductSerializer
@@ -14,7 +14,16 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     print('We are in ProductListCreateAPIView')
     # Authentication module
-    authentication_classes = [authentication.SessionAuthentication]
+    # authentication_classes = [
+    #     authentication.SessionAuthentication,
+    #     authentication.TokenAuthentication // using  built in keywork 'Token'
+    # ]
+
+    # After adding the default in settings.py using the docuemntaiton, we dont need to declare it in the view of the product itself.
+    # authentication_classes = [
+    #     authentication.SessionAuthentication,
+    #     TokenAuthentication # using custom module with keywork 'Bearer'
+    # ]
 
     # implementing the permission (middleware) from rest_framework
     # apparently just by creating the permission_classes definition, the framework recongnizes it and it starts working
@@ -30,6 +39,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # permission_classes = [IsStaffEditorPermission]
 
     # Lastly, we can manage permissions in the way of an array.    
+    # even having the default GET permisson in the default settings.py, we want to keep these custom ones
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_create(self, serializer):
