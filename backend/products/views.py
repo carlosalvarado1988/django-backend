@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from .models import Product
+from .permissions import IsStaffEditorPermission
 from .serializers import ProductSerializer
 
 
@@ -26,10 +27,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 
     # This one is from DjangoModel, meaning it bases permission based on the user itself, 
     # according to what was setup in the admin pannel or via the CLI user creation
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [IsStaffEditorPermission]
 
-
-
+    # Lastly, we can manage permissions in the way of an array.    
+    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_create(self, serializer):
         # this could be one line method to save a user in the serializer
