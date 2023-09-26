@@ -1,15 +1,19 @@
-from rest_framework import generics, mixins, authentication, permissions
+from rest_framework import generics, mixins #authentication, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from api.mixins import (UserQuerySetMixin, StaffEditorPermissionMixin)
 from api.authentication import TokenAuthentication
 from .models import Product
-from .permissions import IsStaffEditorPermission
+# from ..api.permissions import IsStaffEditorPermission
 from .serializers import ProductSerializer
 
 
 # THESE ARE KNOW AS CLASS BASED VIEW
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(
+    UserQuerySetMixin, 
+    StaffEditorPermissionMixin, 
+    generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     print('We are in ProductListCreateAPIView')
@@ -40,7 +44,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 
     # Lastly, we can manage permissions in the way of an array.    
     # even having the default GET permisson in the default settings.py, we want to keep these custom ones
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] #commented since we implemented the mixin at the top level
 
     def perform_create(self, serializer):
         # this could be one line method to save a user in the serializer
@@ -51,11 +55,22 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
+
+    # since we added the user to the serializer, to be part of the product object, we want to add that during creation.
+    # def get_queryset(self, *args, **kwargs):
+    #     qs=super().get_queryset(*args, **kwargs)
+    #     user=self.request.user
+    #     # print(user)
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     return qs.filter(user=user)
+    # we commented this because it was moved to the mixins.py and imported as a dependency injection
+        
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 
-class ProductDetailsAPIView(generics.RetrieveAPIView):
+class ProductDetailsAPIView(StaffEditorPermissionMixin, generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
@@ -75,7 +90,7 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 product_update_view = ProductUpdateAPIView.as_view()
 
 
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductDestroyAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -94,7 +109,7 @@ product_destroy_view = ProductDestroyAPIView.as_view()
 #     serializer_class = ProductSerializer
 
 
-class ProductMixinView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class ProductMixinView(StaffEditorPermissionMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'

@@ -4,7 +4,7 @@ Django official documentation:
 https://www.django-rest-framework.org/
 
 course video: https://www.youtube.com/watch?v=c708Nf0cHrs
-course time: 2:04min
+course time: 4:08min
 
 ## Setup the local env
 
@@ -176,7 +176,93 @@ then we add our custom method to override the authentication method in views.py 
 so far we have built specefic use cases for our product model. how about reusing some in different new modules?
 we refer to their documentation: https://www.django-rest-framework.org/#installation:~:text=DEFAULT_PERMISSION_CLASSES
 
-> 'DEFAULT_PERMISSION_CLASSES': [
+> 'DEFAULT_PERMISSION_CLASSES': [>
+>
 > > 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-> >'WE REFER TO THE PATH'
-> >]
+> > 'WE REFER TO THE PATH'
+> > ]
+
+## Using Mixins for persmissions. (video: 3:08)
+
+For this we had to move our permission.py file from the specific product module into the api directory, so it goes broad.
+then we create a mixins file, and we add the class StaffEditorPermissionMixin() where we declare the permissions.
+
+from it we can now import into our views as an inyected mixin. eg.
+
+> class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
+
+## ViewSets and Routers. (video: 3:13)
+
+we create a viewset as a mixin, as a modular way to have it.
+
+> from .models import Product
+> from .serializers import ProductSerializer
+
+> class ProductViewSet(viewsets.ModelViewSet):
+> queryset = Product.objects.all()
+> serializer_class = ProductSerializer
+> lookup_field = 'pk' #default
+
+and we create a routes.py file under the cfehome directory.
+
+> from rest_framework.routers import DefaultRouter
+> from products.viewsets import ProductViewSet
+> router = DefaultRouter()
+> router.register('products-abc', ProductViewSet, basename='products')
+> urlpatters = router.urls
+
+the hour urls file needs to add the routers module.
+
+> path('api/v2/', include('cfehome.routers')), # our v2 routers version
+
+then: http://localhost:8000/api/v2/ responds with
+{
+"products-abc": "http://localhost:8000/api/v2/products-abc/"
+}
+
+## URLs, reverse and serializers (video: 3:25)
+
+we add a new url serializer, `url = serializers.SerializerMethodField(read_only=True)` datapoint
+
+    # this is a way to autocomplete the url value for the field, how does "url" listed in the fields array fetches whats in the get_url def function?
+    # apparently this is part of the magic of django, connecting the field with its get_ prefix, the same happens with disccount.
+    > def get_url(self, obj):
+    >     return f'/api/products/{obj.id}'
+
+    # another elegant way is to use the built-in reverse() function from rest_framework, this works specially well (and only) with ModelSerializer. adding: from rest_framework.reverse import reverse
+
+    # as the first argument of the reverse func, we need to reference the name of the url, so we added this extra param to the urls.py in products dir.
+
+    > def get_url(self, obj):
+    >    request = self.context.get('request') #self.request
+    >   if request is None:
+    >        return None
+    >    return reverse("", kwargs={"pk": obj.ud}, request=request)
+
+## Model Serializer Create and Update Methods. (video: 3:34)
+
+wanting to hide, or update fields that are not listed in the model? we can, watch the video for understanding, but not something commited in the code as its not that common
+
+## Custom Validation with Serializers (video: 3:41)
+
+adding a func def with validate\_<field_name> (prefix) will do the trick, this is data coming in from the create, or update methods.
+
+## Request User Data & Customize View Queryset (video: 3:53)
+
+for this we adjust models.py under products directory.
+
+from django.db import models
+from django.conf import settings
+User = settings.AUTH_USER_MODEL # auth.User
+
+class Product(models.Model):
+user = models.ForeignKey(User, default=1, null=True, on_delete=models.SET_NULL)
+
+we run the migration using:
+
+> python3 backend/manage.py makemigrations
+> python3 backend/manage.py migrate
+
+after we run, we can see users are attached to products in the admin panel, still we need to enchance our serializer to see the data thru the endopoint.
+
+## Related fields and foreign key serializer (video: 4:08)
