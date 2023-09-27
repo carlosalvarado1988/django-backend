@@ -2,9 +2,10 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from .models import Product
 from . import validators
-
+from api.serializers import UserPublicSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializer(source='user', read_only=True) #Django maps automaticall to the user, if we change the key, we need to declare the source
     discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     # this HyperlinkedIdentityField is a shortcut method to build a hyperlink, it only works with ModelSerializer
@@ -21,7 +22,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Product
         fields = [
-            # 'user', we can comment this after we ensure, we save user data on create in the view
+            'owner', #we can comment this after we ensure, we save user data on create in the view
             'url',
             'edit_url',
             'pk',

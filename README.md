@@ -265,4 +265,44 @@ we run the migration using:
 
 after we run, we can see users are attached to products in the admin panel, still we need to enchance our serializer to see the data thru the endopoint.
 
-## Related fields and foreign key serializer (video: 4:08)
+## Related fields and foreign key serializer (video: 4:09)
+
+instead of using the built-in SerializerMethodField to generate a getter for the user data
+
+> user_data = serializers.SerializerMethodField(read_only=True)
+
+we better separate a module, called serializers.py
+
+## Pagination (video 4:24)
+
+to do this we adjust cfehome/settings, and add:
+
+> "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+> "PAGE_SIZE": 10
+
+And we get nice pagination built-in out of the box:
+![Alt text](image-4.png)
+
+Also the url is automatically modified: http://localhost:8000/api/products/?limit=10&offset=10
+
+## A Django Based Search for our Product API
+
+For this exercise we added a public key to the product schema (Product Model)
+for every change in the model, it means a change in the db schema, so we need to run the migrations.
+
+> python3 backend/manage.py makemigrations
+> python3 backend/manage.py migrate
+
+then in order to test this better, we added a new client app using the django framework for easy setup.
+
+> python3 backend/manage.py startapp search
+
+and then modify the file search/views.py
+
+Also we add urls.py into search directory.
+
+urlpatterns = [
+path('', views.SearchListView.as_view(), name='search')
+]
+
+and we add the new module - app search into settings.

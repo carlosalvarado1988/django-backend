@@ -19,6 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')), # host:800/api/
+    path('api/search/', include('search.urls')), # host:800/api/search/
     path('api/products/', include('products.urls')), # host:800/api/products/
     path('api/v2/', include('cfehome.routers')), # our v2 routers version
 
