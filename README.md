@@ -306,3 +306,29 @@ path('', views.SearchListView.as_view(), name='search')
 ]
 
 and we add the new module - app search into settings.
+
+test url: http://localhost:8000/api/search/?q=hello
+
+### Building your search engine on Algolia
+
+algolia account created with OAuth with google.
+created a project
+went to docs: https://www.algolia.com/doc/framework-integration/django/setup/?client=python
+install the official package in our requirements: algoliasearch-django>=2.0,<3.0
+run command: pip install -r requiremnets.txt from root dir.
+
+then added in settings.py:
+ALGOLIA = {
+'APPLICATION_ID': 'G2JJN53YMA',
+'API_KEY': 'secret',
+'INDEX_PREFIX': 'cfe',
+}
+and
+APPS_INSTALLED = [
+...
+'algoliasearch_django',
+...
+]
+
+then create a file index.py under products dir.
+this is to declare what data will exposed to the external service

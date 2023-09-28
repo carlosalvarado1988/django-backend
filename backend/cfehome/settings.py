@@ -37,11 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third party packages
     'rest_framework',
     'rest_framework.authtoken',
+
+    # internal apps
     'api',
     'products',
     'search',
+
+    # third party api services
+    'algoliasearch_django',
 ]
 
 MIDDLEWARE = [
@@ -137,4 +144,12 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10
+}
+
+# This are env variables - we would put then in a .env file and use use django-dotenv to read .env file
+# keep it simple for this tutorial
+ALGOLIA = {
+    'APPLICATION_ID': 'G2JJN53YMA',
+    'API_KEY': '6d11ca02ffeb3293d644d83c3ab58ca0',
+    'INDEX_PREFIX': 'cfe',
 }
