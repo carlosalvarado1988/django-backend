@@ -70,13 +70,13 @@ class ProductListCreateAPIView(
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 
-class ProductDetailsAPIView(StaffEditorPermissionMixin, generics.RetrieveAPIView):
+class ProductDetailsAPIView(UserQuerySetMixin, StaffEditorPermissionMixin, generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # lookup_field = 'pk'
 product_detail_view = ProductDetailsAPIView.as_view()
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(UserQuerySetMixin, StaffEditorPermissionMixin, generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -90,7 +90,7 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 product_update_view = ProductUpdateAPIView.as_view()
 
 
-class ProductDestroyAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
+class ProductDestroyAPIView(UserQuerySetMixin, StaffEditorPermissionMixin, generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -109,7 +109,7 @@ product_destroy_view = ProductDestroyAPIView.as_view()
 #     serializer_class = ProductSerializer
 
 
-class ProductMixinView(StaffEditorPermissionMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class ProductMixinView(UserQuerySetMixin, StaffEditorPermissionMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'

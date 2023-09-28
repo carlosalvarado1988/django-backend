@@ -4,8 +4,19 @@ from .models import Product
 from . import validators
 from api.serializers import UserPublicSerializer
 
+
+
+class ProductInlineSerializer(serializers.Serializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='product-detail',
+        lookup_field='pk',
+        read_only=True
+    )
+    title=serializers.CharField(read_only=True)
+
 class ProductSerializer(serializers.ModelSerializer):
     owner = UserPublicSerializer(source='user', read_only=True) #Django maps automaticall to the user, if we change the key, we need to declare the source
+    related_products = ProductInlineSerializer(source='user.product_set.all', read_only=True, many=True)
     discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     # this HyperlinkedIdentityField is a shortcut method to build a hyperlink, it only works with ModelSerializer
@@ -33,6 +44,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'sale_price',
             'discount',
+            'related_products'
         ]
     
     # this is a way to autocomplete the url value for the field, how does "url" listed in the fields array fetches whats in the get_url def function?
