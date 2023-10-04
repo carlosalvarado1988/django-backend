@@ -311,6 +311,7 @@ test url: http://localhost:8000/api/search/?q=hello
 
 ### Building your search engine on Algolia
 
+Our search is only filtering data by a match, but its not a robust search,
 algolia account created with OAuth with google.
 created a project
 went to docs: https://www.algolia.com/doc/framework-integration/django/setup/?client=python
@@ -332,3 +333,25 @@ APPS_INSTALLED = [
 
 then create a file index.py under products dir.
 this is to declare what data will exposed to the external service
+
+after we create the index file we run the command:
+
+> python3 manage.py algolia_reindex
+
+then we can add specific method:
+def is_public(self) -> bool:
+return self.public #True or False
+in the product model so that Algolia can filter as well via the public key.
+
+aditioanlly, we can add TAGS
+
+for every change in the model, we want to sync algolia
+
+> python3 manage.py algolia_reindex
+
+### Implementing Search client for Django with Algolia.
+
+into search app we create a client file
+then we implement the search in the view.
+
+- renamed the SearchListOldView to create the nuew one to be cnnected via algolia
