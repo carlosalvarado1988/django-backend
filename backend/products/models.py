@@ -38,6 +38,14 @@ class Product(models.Model):
     # This is needed so that the search method is available in qs
     objects = ProductManager()
 
+    @property
+    def path(self):
+        return f"/products/{self.id}/"
+    
+    @property
+    def body(self):
+        return self.content
+    
     def is_public(self) -> bool:
         return self.public #True or False
     

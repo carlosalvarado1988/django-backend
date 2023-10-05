@@ -4,7 +4,7 @@ Django official documentation:
 https://www.django-rest-framework.org/
 
 course video: https://www.youtube.com/watch?v=c708Nf0cHrs
-course time: 4:08min
+course time: 5:52min
 
 ## Setup the local env
 
@@ -355,3 +355,90 @@ into search app we create a client file
 then we implement the search in the view.
 
 - renamed the SearchListOldView to create the nuew one to be cnnected via algolia
+  d we also need to run the re-index command since we change the ProductIndex
+
+> python3 manage.py algolia_reindex
+
+after modifying the ProductIndex for algolia that functions as a schema, we make sure to run the client in the interactive Console with
+the following command: (under backend dir)
+
+> python3 manage.py shell
+
+this in order to run:
+
+> perform_search("hello", tags=["cars"], public=True)
+
+from the console and check the result in the console
+![Alt text](image-5.png)
+
+## Unified designs of Serializers and Indices (video: 5:30)
+
+lets say, we have 2 different models (schemas) and we want to unify the keys.
+lets say our app is going to communicate with another app, we handle product model. they handle article model.
+and we need to unify some fields.
+
+so we can tweak a bit our model itself
+as a class, we can expose a method, property to call a specific key in the model.
+
+> @property
+> def body(self):
+> return self.content
+
+be careful that this is only for fetching, but putting data like updates, or post (creating) then it is mapping independently
+so in the serializer - the file that actually maps the data, exposes a prorperty body instead of content in order to do data modifications
+
+> body = serializers.CharField(source='content')
+
+also modify index for search, and run:
+
+> python3 manage.py algolia_reindex
+
+## JSON WEB Token authentication with simplejwt (video: 5:46)
+
+Read the article:
+
+> https://www.codingforentrepreneurs.com/blog/python-jwt-client-django-rest-framework-simplejwt/
+> copy the client code and create a jwt.py file under the client dir
+
+we need to add a new package, in requirements.txt
+
+> djangorestframework-simplejwt
+> pip install -r requirements.txt
+
+also add into settings.py
+
+> 'rest_framework_simplejwt',
+
+also add into the REST_FRAMEWORK=[]
+
+> "rest_framework_simplejwt.authentication.JWTAuthentication"
+
+we also add new url for the token authentication, with its imports
+
+> path('token/', TokenObtainPairView.as_view(), name="token_obtain_pair"),
+> path('token/refresh', TokenRefreshView.as_view(), name="token_refresh"),
+> path('token/verify', TokenVerifyView.as_view(), name="token_verify"),
+
+lastly, run all migrations in case some are needed.
+
+> python3 backend/manage.py migrate
+
+we also need to add settings.py
+
+SIMPLE_JWT = {
+"AUTH_HEADER_TYPES": ["BEARER"],
+"ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30),
+"REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=1),
+}
+
+creds.json file is automatically created each time a token is generated (automatically by the library)
+and we test the "access" value in jwt.io page
+
+after adding these changes, we still have a token issue.
+this is due to the bearer token thats already implemented by the previous authentication.py
+![Alt text](image-6.png).
+
+lets try reordering the DEFAULT_AUTHENTICATION_CLASSES in settings.py
+putting: "rest_framework_simplejwt.authentication.JWTAuthentication",
+before: "api.authentication.TokenAuthentication",
+it actually works

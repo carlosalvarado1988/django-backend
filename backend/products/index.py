@@ -10,14 +10,14 @@ class ProductIndex(AlgoliaIndex):
     # should_index= 'is_public'
     Fields=[
         'title',
-        'content',
+        'body',
         'price',
         'user',
         'public',
     ]
     # this is a build in for the AlgoliaIndex library
     settings={
-        'searchableAttributes': ['title', 'content'],
+        'searchableAttributes': ['title', 'body'],
         'attributesForFaceting': ['user', 'public']
     }
     tags= 'get_tags_list'

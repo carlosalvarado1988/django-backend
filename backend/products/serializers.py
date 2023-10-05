@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # email = serializers.EmailField(write_only=True)
     # this is an example on how to grab a value to be added to another , title to name
     # name=serializers.CharField(source='title', read_only=True)
-
+    body = serializers.CharField(source='content')
     class Meta: 
         model = Product
         fields = [
@@ -40,13 +40,13 @@ class ProductSerializer(serializers.ModelSerializer):
             # 'email',
             'title',
             # 'name',
-            'content',
+            'body', #changed from content
             'price',
             'sale_price',
             'discount',
             'related_products'
         ]
-    
+
     # this is a way to autocomplete the url value for the field, how does "url" listed in the fields array fetches whats in the get_url def function?
     # apparently this is part of the magic of django, connecting the field with its get_ prefix, the same happens with disccount.
     # def get_url(self, obj):
