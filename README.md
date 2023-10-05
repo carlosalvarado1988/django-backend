@@ -442,3 +442,30 @@ lets try reordering the DEFAULT_AUTHENTICATION_CLASSES in settings.py
 putting: "rest_framework_simplejwt.authentication.JWTAuthentication",
 before: "api.authentication.TokenAuthentication",
 it actually works
+
+## Login via Javascript client (video: 6:00)
+
+we are going to create a new js client directory to test this (no longer using client folder with py files)
+
+we create the simple form in html
+and a client.js to add the event listener to send our form to our endpoint.
+after mapping the fuciton, we get a CORS error
+
+to solve this we need to install CORS handlers in the server.
+in this case specifically django cors handler: https://github.com/adamchainz/django-cors-headers
+
+to add this package in django we do the following:
+add django-cors-hearders in requirements.txt
+
+we add 'corsheaders' in INSTALLED_APPS in settings.py
+we add 'corsheaders.middleware.CorsMiddleware', in MIDDLEWARE in settings.py
+we add CORS_URLS_REGEX = r"^/api/.\*"
+we add CORS_ALLOWED_ORIGINS = []
+if DEBUG:
+CORS_ALLOWED_ORIGINS += [
+'http://localhost:8111',
+'https://localhost:8111',
+]
+and WALLA! CORS is corrected
+
+## Using JWT with JS Client (video: 6:24)
