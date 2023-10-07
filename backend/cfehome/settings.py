@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-m42-771u$kyy%8zjf49v4-6jz2fzbx4qh^63%2*&i$i4ow%i)x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app'] 
 
 
 # Application definition
@@ -114,6 +114,7 @@ WSGI_APPLICATION = 'cfehome.wsgi.application'
 #     }
 # }
 
+# DATABASES = {} # Prevent Django from loading an adapter
 # connecting to vercel postgresql instance
 DATABASES = {
     'default': {
