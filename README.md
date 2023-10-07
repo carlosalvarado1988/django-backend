@@ -548,3 +548,5 @@ navigate to the backend folder.
 check .env for superuser created
 
 > localhost:8000/admin/
+
+alternative blog: https://codewithmuh.medium.com/deploy-django-project-on-vercel-with-postgresql-93dc83cc8e3b to configure build_file.sh
