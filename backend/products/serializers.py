@@ -34,6 +34,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'owner', #we can comment this after we ensure, we save user data on create in the view
+            'user',
             'url',
             'edit_url',
             'pk',

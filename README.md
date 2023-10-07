@@ -469,3 +469,48 @@ CORS_ALLOWED_ORIGINS += [
 and WALLA! CORS is corrected
 
 ## Using JWT with JS Client (video: 6:24)
+
+added the a js_client to serve as equivalent as jwt.py which handles all logic.
+
+handleAuthData set access and refresh tokens into the localStorage
+
+using JWT, we should enforce HTTPS.
+use validateToken
+this is to know if the token needs to be refreshed.
+if valid, do normal operations.
+if invalid, do refresh
+if new access is valid, do normal operations
+if new access is not reached, do new login to start cycle again.
+
+## Search via REST API & JS Client (video: 6:24)
+
+implemented search with additions to authentication, evne thought the endpoint doesnt need authentication,
+i still added headers update in the logic
+
+run client: python3 -m http.server 8111
+
+## Aloglia instantSearchJS (video: 6:49)
+
+https://www.algolia.com/doc/
+
+https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/
+
+This is a library that makes search more robust.
+
+follow this section: https://www.algolia.com/doc/guides/building-search-ui/installation/js/#directly-in-your-page
+
+in order to add a filter, they call it refinements, we add this in the js setup portion:
+
+instantsearch.widgets.refinementList({
+container: "#user-filter",
+attribute: "user",
+}),
+
+and this is also interconnected with the index declaration for algolia (index.py):
+the attributesForFaceting must match for filtering.
+
+// this is a build in for the AlgoliaIndex library
+settings={
+'searchableAttributes': ['title', 'body'],
+'attributesForFaceting': ['user', 'public']
+}

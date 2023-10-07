@@ -12,12 +12,12 @@ class ProductIndex(AlgoliaIndex):
         'title',
         'body',
         'price',
-        'user',
+        'owner',
         'public',
     ]
     # this is a build in for the AlgoliaIndex library
     settings={
         'searchableAttributes': ['title', 'body'],
-        'attributesForFaceting': ['user', 'public']
+        'attributesForFaceting': ['owner', 'public']
     }
     tags= 'get_tags_list'
