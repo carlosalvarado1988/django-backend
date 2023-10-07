@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # third party api services
     'algoliasearch_django',
+    'psycopg2'
 ]
 
 MIDDLEWARE = [
@@ -118,13 +119,28 @@ DATABASES = {
         "URL": "postgres://default:ingWLSJacO54@ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
     }
 }
-# POSTGRES_URL="postgres://default:ingWLSJacO54@ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-# POSTGRES_PRISMA_URL="postgres://default:ingWLSJacO54@ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
-# POSTGRES_URL_NON_POOLING="postgres://default:ingWLSJacO54@ep-old-disk-86077728.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-# POSTGRES_USER="default"
-# POSTGRES_HOST="ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com"
-# POSTGRES_PASSWORD="ingWLSJacO54"
-# POSTGRES_DATABASE="verceldb"
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env("DB_NAME"),
+#         'USER': env("DB_USER"),
+#         'PASSWORD': env("DB_PASSWORD"),
+#         'HOST': env("DB_HOST"),
+#         'PORT': env("DB_PORT"),
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env("DB_NAME"),
+#         'USER': env("DB_USER"),
+#         'PASSWORD': env("DB_PASSWORD"),
+#         'HOST': env("DB_HOST"),
+#         'PORT': env("DB_PORT"),
+#     }
+# }
 
 
 # Password validation

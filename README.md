@@ -530,3 +530,8 @@ we need to connect to an external database as well.
 #### connecting to external DB
 
 https://docs.djangoproject.com/en/dev/ref/settings/#databases
+
+Created a Postgresql db in vercel for free
+followed this blog to setup the libraries and connection: https://stackpython.medium.com/how-to-start-django-project-with-a-database-postgresql-aaa1d74659d8
+
+added .env to manage private keys
