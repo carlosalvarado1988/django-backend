@@ -24,3 +24,4 @@ urlpatterns = [
     path('api/v2/', include('cfehome.routers')), # our v2 routers version
 
 ]
+
