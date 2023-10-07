@@ -34,8 +34,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # this is for Vercel
-STATICFILES_DIRS = [BASE_DIR/'static',]
-STATIC_ROOT = BASE_DIR/'staticfiles'
+# STATICFILES_DIRS = [BASE_DIR/'static',]
+# STATIC_ROOT = BASE_DIR/'staticfiles'
 
 # Application definition
 
