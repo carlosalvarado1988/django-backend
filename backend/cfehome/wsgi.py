@@ -16,4 +16,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cfehome.settings')
 application = get_wsgi_application()
 
 # addition to configure vercel deployment
-app = application
+app = get_wsgi_application()
+
