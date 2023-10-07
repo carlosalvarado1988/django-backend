@@ -514,3 +514,5 @@ settings={
 'searchableAttributes': ['title', 'body'],
 'attributesForFaceting': ['user', 'public']
 }
+
+after all, you can style the front end for it.
