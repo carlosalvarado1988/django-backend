@@ -535,3 +535,16 @@ Created a Postgresql db in vercel for free
 followed this blog to setup the libraries and connection: https://stackpython.medium.com/how-to-start-django-project-with-a-database-postgresql-aaa1d74659d8
 
 added .env to manage private keys
+
+I had to create a new user for admin
+
+## Authentication
+
+we need to create a super user
+navigate to the backend folder.
+
+> python3 backend/manage.py createsuperuser
+
+check .env for superuser created
+
+> localhost:8000/admin/

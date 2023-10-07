@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import datetime
 
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'psycopg2',
 
     # internal apps
     'api',
@@ -52,7 +58,7 @@ INSTALLED_APPS = [
 
     # third party api services
     'algoliasearch_django',
-    'psycopg2'
+
 ]
 
 MIDDLEWARE = [
@@ -108,40 +114,18 @@ WSGI_APPLICATION = 'cfehome.wsgi.application'
 #     }
 # }
 
+# connecting to vercel postgresql instance
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "verceldb",
-        "USER": "default",
-        "PASSWORD": "ingWLSJacO54",
-        "HOST": "ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com",
-        "PORT": "5432",
-        "URL": "postgres://default:ingWLSJacO54@ep-old-disk-86077728-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
+        'URL': env('DB_URL')
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT"),
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -200,11 +184,10 @@ REST_FRAMEWORK = {
 # This are env variables - we would put then in a .env file and use use django-dotenv to read .env file
 # keep it simple for this tutorial
 ALGOLIA = {
-    'APPLICATION_ID': 'G2JJN53YMA',
-    'API_KEY': '6d11ca02ffeb3293d644d83c3ab58ca0',
-    'INDEX_PREFIX': 'cfe',
+    'APPLICATION_ID': env('ALGOLIA_APPLICATION_ID'),
+    'API_KEY': env('ALGOLIA_API_KEY'),
+    'INDEX_PREFIX': env('ALGOLIA_INDEX_PREFIX'),
 }
-
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ["Bearer"],
