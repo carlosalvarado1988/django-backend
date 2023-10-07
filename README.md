@@ -516,3 +516,17 @@ settings={
 }
 
 after all, you can style the front end for it.
+
+# Deploying testing app to vercel
+
+https://www.makeuseof.com/django-app-vercel-host-free/
+
+add vercel.json file,
+adapt app name to cfehome
+adata the default vsgi.py file and add app = application line at the end
+
+we need to connect to an external database as well.
+
+#### connecting to external DB
+
+https://docs.djangoproject.com/en/dev/ref/settings/#databases

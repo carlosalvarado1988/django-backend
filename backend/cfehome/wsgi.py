@@ -14,3 +14,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cfehome.settings')
 
 application = get_wsgi_application()
+
+# addition to configure vercel deployment
+app = application
