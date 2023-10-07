@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import datetime
-
+import os
 import environ
 # Initialise environment variables
 env = environ.Env()
@@ -33,6 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', '.now.sh']
 
+# this is for Vercel
+STATICFILES_DIRS = [BASE_DIR/'static',]
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
 # Application definition
 
@@ -194,3 +197,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=1),
 }
+
+# At the end of file. add these lines FOR VERCEL
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+MEDIA_URLS ='/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
