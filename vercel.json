@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "cfehome/wsgi.py",
-      "use": "@ardnt/vercel-python-wsgi",
+      "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     },
     {
@@ -16,15 +16,12 @@
   ],
   "routes": [
     {
-      "src": "/backend/(.*)",
-      "dest": "cfehome/wsgi.py"
-    }
-  ],
-  "redirects": [
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
     {
-      "source": "/",
-      "destination": "/api/products",
-      "permanent": false
+      "src": "/(.*)",
+      "dest": "cfehome/wsgi.py"
     }
   ]
 }

@@ -31,7 +31,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', '.now.sh', '*']
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
 # this is for Vercel
 STATICFILES_DIRS = [BASE_DIR/'static',]
@@ -103,7 +103,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cfehome.wsgi.application'
+# WSGI_APPLICATION = 'cfehome.wsgi.application'
+WSGI_APPLICATION = 'cfehome.wsgi.app'
 
 
 # Database
