@@ -9,12 +9,22 @@
     {
       "src": "build_files.sh",
       "use": "@vercel/static-build"
-    }
+    },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.py", "use": "@vercel/python" },
+    { "src": "*.js", "use": "@vercel/node" }
   ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "cfehome/wsgi.py"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/api/products",
+      "permanent": false
     }
   ]
 }
